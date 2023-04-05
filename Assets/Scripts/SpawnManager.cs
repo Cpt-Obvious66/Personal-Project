@@ -19,29 +19,27 @@ public class SpawnManager : MonoBehaviour
     private float itemMaxDelay = 5.0f;
 
 
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
     // Update is called once per frame
     void Update()
     {
-        ObstacleTimer();
-        if (obstacleTimerCount < 0)
+        // only spawn objects and count timers if game is running
+        if (GameManager.Instance.IsGameRunning())
         {
-            SpawnRandomObstacle();
+            ObstacleTimer();
+            if (obstacleTimerCount < 0)
+            {
+                SpawnRandomObstacle();
 
-            // reset timer
-            obstacleTimerCount = Random.Range(obstacleMinDelay, obstacleMaxDelay);
-        }
+                // reset timer
+                obstacleTimerCount = Random.Range(obstacleMinDelay, obstacleMaxDelay);
+            }
 
-        ItemTimer();
-        if (itemTimerCount < 0)
-        {
-            SpawnRandomItem();
-            itemTimerCount = Random.Range(itemMinDelay, itemMaxDelay);
+            ItemTimer();
+            if (itemTimerCount < 0)
+            {
+                SpawnRandomItem();
+                itemTimerCount = Random.Range(itemMinDelay, itemMaxDelay);
+            }
         }
 
     }

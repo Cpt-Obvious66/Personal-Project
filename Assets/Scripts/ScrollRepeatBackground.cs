@@ -18,8 +18,12 @@ public class ScrollRepeatBackground : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        ScrollBackground();
-        CheckAndRepeatBackground();
+        //only move background if game is running
+        if (GameManager.Instance.IsGameRunning())
+        {
+            ScrollBackground();
+            CheckAndRepeatBackground();
+        }
 
     }
 
@@ -28,7 +32,7 @@ public class ScrollRepeatBackground : MonoBehaviour
         if (transform.position.z < startPos.z - repeatWidth)
         {
             transform.position = startPos;
-            Debug.Log("Current x: " + transform.position.x + " start x: " + startPos.x + " + repeat width: " + repeatWidth + " Repeating Background");
+            //Debug.Log("Current x: " + transform.position.x + " start x: " + startPos.x + " + repeat width: " + repeatWidth + " Repeating Background");
         }
     }
 

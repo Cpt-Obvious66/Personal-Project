@@ -12,11 +12,14 @@ public class PlayerController : MonoBehaviour
 
     public bool onGround;
 
+    private ScoreKeeper scoreKeeper;
     private Rigidbody myRigidBody;
 
     // Start is called before the first frame update
     void Start()
     {
+        scoreKeeper = GameObject.Find("Score Keeper").GetComponent<ScoreKeeper>();
+
         myRigidBody = GetComponent<Rigidbody>();
         Physics.gravity *= gravityModifier;
     }
@@ -24,17 +27,21 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // move based on Horizontal axis
-        MovePlayer();
+        // allow movement if game is running
+        if (GameManager.Instance.IsGameRunning())
+        {
+            // move based on Horizontal axis
+            MovePlayer();
+
+            // jump based on input of space bar if player is on ground
+            if (onGround)
+            {
+                Jump();
+            }
+        }
 
         // keep object in bound
         KeepInBounds();
-
-        // jump based on input of space bar if player is on ground
-        if (onGround)
-        {
-            Jump();
-        }
 
     }
 
@@ -78,7 +85,8 @@ public class PlayerController : MonoBehaviour
 
         if (other.gameObject.CompareTag("Obstacle"))
         {
-            Debug.Log("Hit Obstacle: " + other.gameObject.name);
+            scoreKeeper.LoseLife();
+            //Debug.Log("Hit Obstacle: " + other.gameObject.name);
         }
     }
 
@@ -86,7 +94,8 @@ public class PlayerController : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Item"))
         {
-            Debug.Log("Hit Item: " + other.gameObject.name);
+            scoreKeeper.UpdateScore(other.GetComponent<PointsHolder>().GetPointValue());
+            //Debug.Log("Hit Item: " + other.gameObject.name);
             Destroy(other.gameObject);
         }
     }
