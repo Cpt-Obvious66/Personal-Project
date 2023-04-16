@@ -18,14 +18,13 @@ public class ScoreKeeper : MonoBehaviour
     {
         gameplayUIManager = GameObject.Find("GameplayUI").GetComponent<GameplayUIManager>();
 
-        ResetScore();
-        ResetLives();
     }
 
     public void ResetScore()
     {
         score = 0;
         gameplayUIManager.UpdateScore(score);
+        GameManager.Instance.SetCurrentGameScore(score);
     }
 
     public int GetScore()
@@ -55,6 +54,7 @@ public class ScoreKeeper : MonoBehaviour
         lives--;
         if (lives < 0)
         {
+            GameManager.Instance.SetCurrentGameScore(score);
             GameManager.Instance.GameOver();
         }
         else
